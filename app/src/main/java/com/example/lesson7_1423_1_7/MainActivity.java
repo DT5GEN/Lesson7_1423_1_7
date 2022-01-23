@@ -24,10 +24,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initView();
         readSettings();
+        initToolbar();
 
+
+    }
+
+
+
+    private void initToolbar() {
         // получаем Тулбар
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -35,12 +41,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+       // обрабатываем клики меню через свич
+        switch (item.getItemId()){
+            case R.id.action_main:
+                showFragment(MainFragment.newInstance());
+                break;
+            case R.id.action_favorite:
+                showFragment(FavoriteFragment.newInstance());
+                break;
+            case R.id.action_settings:
+                showFragment(SettingsFragment.newInstance());
+                break;
 
+
+        }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // загружаем меню в тулбар
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }

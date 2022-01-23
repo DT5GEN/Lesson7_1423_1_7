@@ -10,9 +10,11 @@
     <!-- помещаем наше меню из контейнера в инклуду -->
 
    <com.google.android.material.appbar.AppBarLayout
+       android:theme="@style/ThemeOverlay.AppCompat.Dark"
        android:layout_width="match_parent"
        android:layout_height="wrap_content">
        <androidx.appcompat.widget.Toolbar
+           app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
            android:id="@+id/toolbar"
            android:layout_width="match_parent"
            android:layout_height="?actionBarSize"/>
