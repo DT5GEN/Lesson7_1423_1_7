@@ -33,6 +33,8 @@ public class SettingsFragment extends Fragment {
         initView(v);
 
         return v;
+
+
     }
 
     private void initView(View v) {
@@ -81,13 +83,18 @@ public class SettingsFragment extends Fragment {
                 writeSettings();
             }
         });
+        switchDelBeforeAdd.setChecked(Settings.isDeleteFragmentBeforeAdd);
+        switchBackStack.setChecked(Settings.isBackStackUsed);
+        switchBackIsRemove.setChecked(Settings.isBackIsRemoveFragment);
+        radioButtonAdd.setChecked(Settings.isAddFragment);
+        radioButtonReplace.setChecked(Settings.isReplaceFragment);
 
 
     }
 
     private void writeSettings() {
         SharedPreferences sharedPreferences = requireActivity()
-                .getSharedPreferences(Settings.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+                .getSharedPreferences(Settings.SHARED_FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(Settings.IS_ADD_FRAGMENT, Settings.isAddFragment);
         editor.putBoolean(Settings.IS_REPLACE_FRAGMENT, Settings.isReplaceFragment);
