@@ -1,6 +1,9 @@
 package com.example.lesson7_1423_1_7;
 
 public class Settings {
+
+    // прописываем настройки
+
     public static final String SHARED_FILE_NAME = "some";
     public static final String IS_BACK_STACK_USED = "STACK";
     public static final String IS_ADD_FRAGMENT = "ADDFRAG";

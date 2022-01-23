@@ -32,8 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .getBoolean(Settings.IS_BACK_STACK_USED, false);
         Settings.isReplaceFragment = sharedPreferences
                 .getBoolean(Settings.IS_REPLACE_FRAGMENT, false);
-        Settings.isAddFragment = sharedPreferences
-                .getBoolean(Settings.IS_ADD_FRAGMENT, false);
+        Settings.isAddFragment =  !Settings.isReplaceFragment;
     }
 
     private void initView() {
@@ -53,9 +52,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.button_back:
 
-
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                if (Settings.isBackIsRemoveFragment){
+                if (fragmentManager.getFragments().size() <=1) break;
+
+                    if (Settings.isBackIsRemoveFragment){
                    Fragment fragmentForDelete = getVisibleFragment(fragmentManager);
                    if (fragmentForDelete != null){
                        fragmentManager.beginTransaction().remove(fragmentForDelete).commit();
