@@ -1,8 +1,11 @@
 package com.example.lesson7_1423_1_7;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
@@ -27,22 +32,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         readSettings();
         initToolbar();
-
+        initDrawer(initToolbar());
 
     }
 
 
-
-    private void initToolbar() {
+    private Toolbar initToolbar() {
         // получаем Тулбар
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        return toolbar;
+    }
+
+    private void initDrawer(Toolbar toolbar) {
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle( this, drawerLayout, toolbar,
+                R.string.app_name, R.string.bottom_sheet_behavior); // последние 2 аргумента любые стринги
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()) {
+                    case R.id.action_main:
+                        showFragment(MainFragment.newInstance());
+                        break;
+                    case R.id.action_favorite:
+                        showFragment(FavoriteFragment.newInstance());
+                        break;
+                    case R.id.action_settings:
+                        showFragment(SettingsFragment.newInstance());
+                        break;
+
+
+                }
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return false;
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-       // обрабатываем клики меню через свич
-        switch (item.getItemId()){
+        // обрабатываем клики меню через свич
+        switch (item.getItemId()) {
             case R.id.action_main:
                 showFragment(MainFragment.newInstance());
                 break;
@@ -75,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .getBoolean(Settings.IS_BACK_STACK_USED, false);
         Settings.isReplaceFragment = sharedPreferences
                 .getBoolean(Settings.IS_REPLACE_FRAGMENT, false);
-        Settings.isAddFragment =  !Settings.isReplaceFragment;
+        Settings.isAddFragment = !Settings.isReplaceFragment;
     }
 
     private void initView() {
@@ -96,18 +131,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_back:
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                if (fragmentManager.getFragments().size() <=1) break;
+                if (fragmentManager.getFragments().size() <= 1) break;
 
-                    if (Settings.isBackIsRemoveFragment){
-                   Fragment fragmentForDelete = getVisibleFragment(fragmentManager);
-                   if (fragmentForDelete != null){
-                       fragmentManager.beginTransaction().remove(fragmentForDelete).commit();
-                   }
+                if (Settings.isBackIsRemoveFragment) {
+                    Fragment fragmentForDelete = getVisibleFragment(fragmentManager);
+                    if (fragmentForDelete != null) {
+                        fragmentManager.beginTransaction().remove(fragmentForDelete).commit();
+                    }
                 } else {
                     fragmentManager.popBackStack();
                 }
-
-
 
 
                 break;
